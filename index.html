@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#101827">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Mi Gasolina">
+<meta name="description" content="Calculadora local de rayitas de gasolina, litros y pesos.">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="icon.png">
+<title>Mi Gasolina · Vento</title>
+<style>
+:root { color-scheme: dark; --bg:#0a1020; --card:#182237; --card2:#111b2e; --text:#f5f7ff; --muted:#a5b3cc; --accent:#55e2a0; --line:#2c3a52; --gold:#ffd98b; }
+* {box-sizing:border-box} html {height:100%;background:var(--bg)} body {margin:0;min-height:100%;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:var(--text);background:radial-gradient(circle at 20% 0%,#1b3450 0%,transparent 36%),var(--bg)}
+main {max-width:480px;margin:0 auto;padding:calc(env(safe-area-inset-top) + 24px) 18px calc(env(safe-area-inset-bottom) + 36px)}
+header {display:flex;align-items:center;gap:12px;margin-bottom:24px} .logo {height:50px;width:50px;display:grid;place-items:center;background:#1d3d3b;border:1px solid #326a59;border-radius:16px;font-size:25px} h1{font-size:26px;letter-spacing:-.8px;line-height:1.1;margin:0} .sub{font-size:13px;color:var(--muted);margin:5px 0 0}
+.card{background:linear-gradient(145deg,#1b2840,var(--card2));border:1px solid #34415a;border-radius:22px;padding:21px;margin-bottom:14px;box-shadow:0 15px 30px #0002}
+.label{display:block;font-size:14px;font-weight:650;color:#d7e0f1;margin-bottom:12px}.helper{font-size:12px;line-height:1.5;color:var(--muted)}
+.stepper{display:flex;align-items:center;justify-content:space-between;gap:8px;margin:13px 0}.stepper button{height:56px;width:62px;border:1px solid #45617a;border-radius:15px;background:#263951;color:#fff;font-size:31px;cursor:pointer;touch-action:manipulation}.stepper button:disabled{opacity:.3}.count{font-size:52px;font-variant-numeric:tabular-nums;font-weight:760;letter-spacing:-2px;line-height:1;width:95px;text-align:center;border:0;border-bottom:1px solid #557769;border-radius:0;background:transparent;color:var(--text);font-family:inherit;outline:none;appearance:textfield;-moz-appearance:textfield}.count::-webkit-inner-spin-button,.count::-webkit-outer-spin-button{-webkit-appearance:none;margin:0}.countsmall{font-size:15px;color:var(--muted);text-align:center}
+.gauge{display:grid;grid-template-columns:repeat(8,1fr);gap:5px;margin-top:22px}.seg{height:31px;border-radius:6px;background:#354158;border:1px solid #4a566c;transition:background .15s}.seg.filled{background:var(--accent);border-color:#8af0bd;box-shadow:0 0 12px #55e2a033}.gauge-labels{display:flex;justify-content:space-between;font-size:11px;margin-top:8px;color:var(--muted)}
+.price-row{display:flex;align-items:center;gap:9px;border:1px solid #45617a;border-radius:15px;padding:0 14px;background:#0e182a}.prefix{font-size:25px;color:var(--accent);font-weight:700}.price-row input{font-size:27px;font-weight:730;padding:14px 0;min-width:0;flex:1;width:100%;border:0;outline:0;color:white;background:transparent;font-family:inherit;font-variant-numeric:tabular-nums}.suffix{color:var(--muted);font-size:14px;white-space:nowrap}
+.mode{display:grid;grid-template-columns:1fr 1fr;gap:6px;padding:5px;border-radius:15px;background:#0e1728;margin-bottom:18px}.mode button{font:inherit;border:0;border-radius:11px;background:transparent;color:var(--muted);padding:12px 6px;font-size:13px;font-weight:700;cursor:pointer}.mode button.active{background:#2c455b;color:var(--text);box-shadow:0 3px 10px #0003}
+.result{background:linear-gradient(135deg,#1f4e48,#123331);border:1px solid #4c957c;border-radius:22px;padding:24px;margin:16px 0}.result small{display:block;color:#c0e6d8;font-weight:600;font-size:13px}.money{font-size:clamp(40px,11vw,54px);font-weight:800;letter-spacing:-1.8px;font-variant-numeric:tabular-nums;margin:8px 0 5px;word-break:break-word}.liters{font-size:23px;color:#dcfff1;font-weight:700;font-variant-numeric:tabular-nums}.result-note{color:#b6dcd0;font-size:12px;margin-top:12px}.missing{font-size:21px;font-weight:750;line-height:1.35;color:#fff;margin:0 0 15px}.pill{display:inline-block;padding:4px 10px;border-radius:999px;background:#ffffff23;color:#d9ffeb;font-size:12px;font-weight:650;margin-bottom:9px}
+.footer{font-size:12px;text-align:center;color:var(--muted);line-height:1.6;margin:20px 8px 0}.sr{position:absolute;left:-10000px}button:focus-visible,input:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+</style>
+</head>
+<body><main>
+<header><div class="logo" aria-hidden="true">⛽</div><div><h1>Mi Gasolina</h1><p class="sub">Volkswagen Vento · Tanque de 55 L</p></div></header>
+<section class="card" aria-labelledby="barLabel"><label class="label" for="count" id="barLabel">¿Cuántas rayitas tienes actualmente?</label><div class="stepper"><button type="button" id="minus" aria-label="Quitar una rayita">−</button><div style="text-align:center"><input id="count" class="count" type="number" min="0" max="8" step="1" inputmode="numeric" value="2" aria-describedby="countHint"><div class="countsmall" id="countHint">de 8 rayitas</div></div><button type="button" id="plus" aria-label="Agregar una rayita">+</button></div><div class="gauge" id="gauge" aria-label="Gasolina que tienes en el tanque"></div><div class="gauge-labels"><span>Vacío</span><span>¼</span><span>½</span><span>¾</span><span>Lleno</span></div><p class="helper" style="margin-bottom:0">Indica lo que marca tu medidor. Calcularemos automáticamente lo que te falta para llenar el tanque.</p></section>
+<section class="result" aria-live="polite" aria-atomic="true"><span class="pill">Para llenar el tanque</span><p class="missing" id="missing">Tienes 2 rayitas. Necesitas 6 para llenar el tanque.</p><small>Litros que necesitas agregar</small><div class="liters" id="liters">41.25 litros</div><small style="margin-top:18px">Costo aproximado</small><div class="money" id="money">$1,072.50</div><div class="result-note">Estimación basada en un tanque de 55 L dividido en 8 partes.</div></section>
+<section class="card"><label for="price" class="label">¿Actualizar precio por litro?</label><div class="price-row"><span class="prefix">$</span><input id="price" type="number" inputmode="decimal" min="0.01" max="999" step="0.01" value="26.00" aria-describedby="saveHint"><span class="suffix">MXN / L</span></div><p class="helper" id="saveHint" style="margin-bottom:0">Utilizaremos automáticamente el último precio que ingresaste, incluso la próxima vez que abras la app.</p></section>
+<p class="footer">Estimación basada en 55 L ÷ 8 rayitas. El tanque puede no estar exactamente en la marca y el medidor puede variar; al cargar, manda la cantidad real indicada por la bomba. Funciona sin internet una vez instalada.</p>
+</main><script>
+(function(){
+'use strict';
+const CAPACITY=55, TOTAL=8, LS_PRICE='mi-gasolina-precio-v1';
+const el=id=>document.getElementById(id);
+const count=el('count'), gauge=el('gauge'), price=el('price');
+let bars=2;
+try {const saved=localStorage.getItem(LS_PRICE);if(saved!==null&&Number.isFinite(Number(saved))&&Number(saved)>0)price.value=saved;}catch(e){}
+const moneyFmt=new Intl.NumberFormat('es-MX',{style:'currency',currency:'MXN',minimumFractionDigits:2,maximumFractionDigits:2});
+const numFmt=new Intl.NumberFormat('es-MX',{maximumFractionDigits:3});
+function render(){
+ el('minus').disabled=bars<=0;el('plus').disabled=bars>=TOTAL;
+ for(let i=0;i<TOTAL;i++){const piece=gauge.children[i];piece.classList.toggle('filled',i<bars);piece.setAttribute('aria-label',`Rayita ${i+1}: ${i<bars?'con gasolina':'sin gasolina'}`);}
+ const missing=TOTAL-bars, liters=missing*CAPACITY/TOTAL, p=Number(price.value);
+ el('missing').textContent=missing===0?'¡Tu tanque está lleno! Tienes las 8 rayitas.':`Tienes ${bars} ${bars===1?'rayita':'rayitas'}. Necesitas ${missing} ${missing===1?'rayita':'rayitas'} para llenar el tanque.`;
+ el('liters').textContent=numFmt.format(liters)+' litros';
+ el('money').textContent=Number.isFinite(p)&&p>0?moneyFmt.format(liters*p):'Ingresa un precio válido';
+}
+function setBars(value){bars=Math.min(TOTAL,Math.max(0,Math.round(value)));count.value=String(bars);render()}
+for(let i=0;i<TOTAL;i++){const piece=document.createElement('div');piece.className='seg';gauge.append(piece)}
+el('minus').addEventListener('click',()=>setBars(bars-1));
+el('plus').addEventListener('click',()=>setBars(bars+1));
+count.addEventListener('input',()=>{const n=Number(count.value);if(count.value!==''&&Number.isFinite(n))setBars(n)});
+count.addEventListener('blur',()=>setBars(count.value===''?bars:Number(count.value)));
+price.addEventListener('input',()=>{const p=Number(price.value);if(Number.isFinite(p)&&p>0){try{localStorage.setItem(LS_PRICE,String(p))}catch(e){}}render()});
+render();
+if('serviceWorker' in navigator&&(location.protocol==='https:'||location.hostname==='localhost'))navigator.serviceWorker.register('./sw.js').catch(()=>{});
+})();
+</script></body></html>
